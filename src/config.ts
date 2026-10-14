@@ -11,8 +11,7 @@ export const SITE = {
     "https://www.google.com/maps/search/?api=1&query=Pastinos+Pastas+y+Vinos+645+W+Hallandale+Beach+Blvd+Hallandale+Beach+FL+33009",
   mapsEmbed:
     "https://www.google.com/maps?q=645+W+Hallandale+Beach+Blvd+Unit+101,+Hallandale+Beach,+FL+33009&output=embed",
-  orderUrl:
-    "https://www.getsauce.com/order/pastinos-pastas-and-vinos/menu?utm_source=lp_website&utm_medium=menu_link&utm_id=pastinos-pastas-and-vinos",
+  orderUrl: "https://www.getsauce.com/order/pastinos-pastas-and-vinos/menu",
   social: {
     instagram: "https://www.instagram.com/pastinospastasyvinos/",
     facebook: "https://www.facebook.com/profile.php?id=100091651899667",

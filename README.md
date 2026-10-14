@@ -24,5 +24,6 @@ Sin estas variables la web funciona igual; el formulario muestra un aviso para l
 
 ## Editar datos
 - Teléfono, dirección, horarios, links: `src/config.ts`
+- Platos y precios del menú: `src/menu.ts`
 - Textos en inglés y español: `src/i18n/strings.ts`
 - Fotos: `public/images` (cada foto tiene versión grande y `-sm`)

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { SITE } from "../config";
 import { useLang } from "../i18n/lang";
 import { Social } from "./ui";
 
-function Header() {
+function Header({ onScan }: { onScan: () => void }) {
   const { t, lang, setLang } = useLang();
   const [open, setOpen] = useState(false);
   const [solid, setSolid] = useState(false);
@@ -72,9 +72,15 @@ function Header() {
           >
             {lang === "en" ? "ES" : "EN"}
           </button>
-          <a className="btn btn--gold header__order" href={SITE.orderUrl} target="_blank" rel="noopener noreferrer">
-            {t.nav.order}
-          </a>
+          <button type="button" className="scan" onClick={onScan}>
+            <svg viewBox="0 0 24 24" aria-hidden>
+              <path
+                fill="currentColor"
+                d="M3 3h8v8H3V3Zm2 2v4h4V5H5Zm8-2h8v8h-8V3Zm2 2v4h4V5h-4ZM3 13h8v8H3v-8Zm2 2v4h4v-4H5Zm8-2h2v2h-2v-2Zm2 2h2v2h-2v-2Zm2-2h4v2h-2v2h-2v-4Zm-4 4h2v4h-2v-4Zm4 2h4v2h-4v-2Zm2-2h2v2h-2v-2Z"
+              />
+            </svg>
+            <span>{t.scanMe}</span>
+          </button>
           <button
             type="button"
             className={"burger" + (open ? " is-open" : "")}
@@ -132,17 +138,43 @@ function Footer() {
 
 export default function Layout() {
   const { pathname } = useLocation();
+  const { t } = useLang();
+  const qr = useRef<HTMLDialogElement>(null);
   useEffect(() => window.scrollTo(0, 0), [pathname]);
   return (
     <>
       <a className="skip" href="#main">
         Skip to content
       </a>
-      <Header />
+      <Header onScan={() => qr.current?.showModal()} />
       <main id="main">
         <Outlet />
       </main>
       <Footer />
+      <a className="order-fab" href={SITE.orderUrl} target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden>
+          <path
+            fill="currentColor"
+            d="M7 4V3h10v1h3a1 1 0 0 1 1 1v2a5 5 0 0 1-5 5h-.3A5 5 0 0 1 13 14.9V18h3v2H8v-2h3v-3.1A5 5 0 0 1 8.3 12H8a5 5 0 0 1-5-5V5a1 1 0 0 1 1-1h3Zm0 2H5v1a3 3 0 0 0 2 2.8V6Zm10 0v3.8A3 3 0 0 0 19 7V6h-2Z"
+          />
+        </svg>
+        {t.orderNow}
+      </a>
+      <dialog
+        ref={qr}
+        className="qr-dialog"
+        aria-labelledby="qr-title"
+        onClick={(e) => e.target === e.currentTarget && qr.current?.close()}
+      >
+        <div className="qr-dialog__box">
+          <h2 id="qr-title">{t.scanTitle}</h2>
+          <img src="/images/qr-linktree.png" alt="QR" width="260" height="260" />
+          <p>{t.scanText}</p>
+          <button type="button" className="btn btn--wine" onClick={() => qr.current?.close()}>
+            {t.close}
+          </button>
+        </div>
+      </dialog>
     </>
   );
 }

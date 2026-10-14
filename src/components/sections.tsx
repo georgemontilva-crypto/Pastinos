@@ -1,11 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { IMG, SITE } from "../config";
+import { BUILD } from "../menu";
 import { useLang } from "../i18n/lang";
 import { HoursList, Img, OpenBadge } from "./ui";
 
 export function PastaSteps({ title, withCta = true }: { title?: string; withCta?: boolean }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const L = lang === "es" ? 1 : 0;
+  const options = [
+    BUILD.pasta.join(", "),
+    BUILD.sauce.map((x) => x[L]).join(", "),
+    `${BUILD.ingredients.map((x) => x[L]).join(", ")}. ${t.home.extraIng} +$${BUILD.extraIngredient}`,
+    BUILD.proteins.map((p) => `${p.name[L]} +$${p.price}`).join(", "),
+  ];
   return (
     <section className="build" aria-labelledby="build-title">
       <div className="build__inner">
@@ -13,17 +21,22 @@ export function PastaSteps({ title, withCta = true }: { title?: string; withCta?
           <h2 id="build-title">{title ?? t.home.buildTitle}</h2>
           <p>{t.home.buildText}</p>
         </div>
-        <ol className="steps">
-          {t.home.steps.map((s, i) => (
-            <li key={s.t}>
-              <span className="steps__n" aria-hidden>
-                {i + 1}
-              </span>
-              <h3>{s.t}</h3>
-              <p>{s.d}</p>
-            </li>
-          ))}
-        </ol>
+        <div className="build__list">
+          <p className="build__price">
+            {t.home.buildPrice} <strong>${BUILD.price}</strong>
+          </p>
+          <ol className="steps">
+            {t.home.steps.map((s, i) => (
+              <li key={s.t}>
+                <span className="steps__n" aria-hidden>
+                  {i + 1}
+                </span>
+                <h3>{s.t}</h3>
+                <p>{options[i]}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
         <div className="build__media">
           <Img name="pasta-bar" alt="" sizes="(max-width: 800px) 100vw, 60vw" />
           <Img name="plates-pass" alt="" sizes="(max-width: 800px) 50vw, 25vw" />

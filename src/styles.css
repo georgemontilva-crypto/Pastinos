@@ -568,13 +568,29 @@ p {
   color: var(--on-dark-muted);
   max-width: 40ch;
 }
+.build__list {
+  align-self: end;
+}
+.build__price {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font: italic 400 1.25rem/1.3 var(--serif);
+  color: var(--on-dark-muted);
+  margin-bottom: 1rem;
+}
+.build__price strong {
+  font: 500 2.4rem/1 var(--serif);
+  color: var(--bulb);
+  font-style: normal;
+}
 .steps {
   list-style: none;
   padding: 0;
   margin: 0;
   display: grid;
   gap: 0;
-  align-self: end;
 }
 .steps li {
   display: grid;
@@ -1271,4 +1287,221 @@ p {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
+}
+
+/* ===== Scan me + QR ===== */
+.scan {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 42px;
+  padding: 0 1rem 0 0.75rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(226, 183, 101, 0.6);
+  background: none;
+  color: var(--bulb);
+  font: 600 0.88rem/1 var(--sans);
+  cursor: pointer;
+}
+.scan svg {
+  width: 18px;
+  height: 18px;
+}
+.scan:hover {
+  background: rgba(226, 183, 101, 0.12);
+}
+@media (max-width: 960px) {
+  .scan span {
+    display: none;
+  }
+  .scan {
+    width: 42px;
+    padding: 0;
+    justify-content: center;
+  }
+}
+.qr-dialog {
+  border: 0;
+  padding: 0;
+  background: none;
+  max-width: calc(100vw - 2rem);
+}
+.qr-dialog::backdrop {
+  background: rgba(20, 8, 10, 0.75);
+}
+.qr-dialog__box {
+  background: var(--paper);
+  border-top: 4px solid var(--chianti);
+  border-radius: 8px;
+  padding: 1.75rem;
+  width: 340px;
+  max-width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+.qr-dialog__box h2 {
+  font-size: 1.7rem;
+  color: var(--chianti);
+}
+.qr-dialog__box img {
+  width: 240px;
+  height: auto;
+}
+.qr-dialog__box p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* ===== Floating order button ===== */
+.order-fab {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 52px;
+  padding: 0 1.4rem 0 1.15rem;
+  border-radius: 999px;
+  background: var(--bulb);
+  color: var(--espresso);
+  font: 600 1rem/1 var(--sans);
+  text-decoration: none;
+  box-shadow: 0 12px 28px -8px rgba(34, 20, 15, 0.55), 0 0 0 3px rgba(74, 18, 32, 0.9);
+  transition: transform 0.2s, background-color 0.2s;
+}
+.order-fab svg {
+  width: 20px;
+  height: 20px;
+}
+.order-fab:hover {
+  background: #f0cb80;
+  transform: translateY(-2px);
+}
+
+/* ===== Menu (carta) ===== */
+.menu-tabs {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 30;
+  background: var(--chianti);
+  border-top: 1px solid rgba(226, 183, 101, 0.18);
+}
+.menu-tabs ul {
+  list-style: none;
+  margin: 0 auto;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  padding: 0 var(--gutter);
+  display: flex;
+  gap: 1.75rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.menu-tabs a {
+  display: block;
+  padding: 1rem 0;
+  white-space: nowrap;
+  color: var(--on-dark);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.menu-tabs a:hover {
+  color: var(--bulb);
+}
+#pasta,
+.carta,
+#drinks {
+  scroll-margin-top: calc(var(--header-h) + 56px);
+}
+.carta {
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vw, 6rem) var(--gutter) 0;
+}
+#drinks {
+  margin-top: clamp(3.5rem, 8vw, 6rem);
+}
+.carta__grid.carta__grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem 2rem;
+}
+.carta__grid--3 .plate__img img {
+  aspect-ratio: 5 / 4;
+}
+.carta__grid {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.25rem 1.5rem;
+}
+.plate__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+.plate__row h3 {
+  font-size: 1.25rem;
+}
+.plate__price {
+  font-weight: 600;
+  color: var(--chianti-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+@media (max-width: 1100px) {
+  .carta__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .carta__grid,
+  .carta__grid.carta__grid--3 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem 1rem;
+  }
+  .plate__row {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .plate__row h3 {
+    font-size: 1.1rem;
+  }
+}
+.drinks {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  max-width: 26rem;
+}
+.drinks li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.45rem 0;
+}
+.drinks__dots {
+  flex: 1;
+  border-bottom: 1px dotted rgba(226, 183, 101, 0.5);
+}
+.drinks li span:last-child {
+  font-variant-numeric: tabular-nums;
+  color: var(--bulb);
+}
+.menu-note {
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 1.5rem var(--gutter) 2.5rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.footer {
+  padding-bottom: 6rem;
 }
