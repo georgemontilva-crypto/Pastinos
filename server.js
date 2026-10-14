@@ -116,6 +116,7 @@ app.use(
 app.use(express.static(dist, { maxAge: "7d", index: false }));
 app.get("*", (req, res) => {
   if (req.path.startsWith("/api")) return res.status(404).json({ error: "not_found" });
+  res.setHeader("Cache-Control", "no-cache");
   res.sendFile(path.join(dist, "index.html"));
 });
 

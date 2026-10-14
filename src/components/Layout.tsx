@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { SITE } from "../config";
 import { useLang } from "../i18n/lang";
 import { Social } from "./ui";
+import ErrorBoundary from "./ErrorBoundary";
 
 function Header({ onScan }: { onScan: () => void }) {
   const { t, lang, setLang } = useLang();
@@ -148,7 +149,9 @@ export default function Layout() {
       </a>
       <Header onScan={() => qr.current?.showModal()} />
       <main id="main">
-        <Outlet />
+        <ErrorBoundary resetKey={pathname}>
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <Footer />
       <a className="order-fab" href={SITE.orderUrl} target="_blank" rel="noopener noreferrer">

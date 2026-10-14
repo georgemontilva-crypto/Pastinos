@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
 import Story from "./pages/Story";
 import Menu from "./pages/Menu";
@@ -30,6 +31,7 @@ function NotFound() {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <ErrorBoundary resetKey="root">
     <LangProvider>
       <BrowserRouter>
         <Routes>
@@ -43,5 +45,6 @@ createRoot(document.getElementById("root")!).render(
         </Routes>
       </BrowserRouter>
     </LangProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );
