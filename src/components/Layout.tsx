@@ -12,7 +12,9 @@ function Header({ onScan }: { onScan: () => void }) {
   const { pathname } = useLocation();
   const overHero = ["/", "/our-story", "/menu"].includes(pathname);
 
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
   useEffect(() => {
     const onScroll = () => setSolid(window.scrollY > 40);
     onScroll();
@@ -141,7 +143,9 @@ export default function Layout() {
   const { pathname } = useLocation();
   const { t } = useLang();
   const qr = useRef<HTMLDialogElement>(null);
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return (
     <>
       <a className="skip" href="#main">
