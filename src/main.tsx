@@ -14,6 +14,9 @@ import "@fontsource/albert-sans/latin-400.css";
 import "@fontsource/albert-sans/latin-500.css";
 import "@fontsource/albert-sans/latin-600.css";
 import "./styles.css";
+import { installDomGuard } from "./domGuard";
+
+installDomGuard();
 
 function NotFound() {
   const { t } = useLang();
