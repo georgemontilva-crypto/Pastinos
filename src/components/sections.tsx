@@ -89,13 +89,68 @@ export function Visit() {
   );
 }
 
-const INSIDE = ["room-lights", "wine-bar", "dining-frames", "storefront", "dining-banners", "corner", "dining-room", "dining-windows"];
+const INSIDE = [
+  "room-lights",
+  "wine-bar",
+  "dining-frames",
+  "storefront",
+  "pasta-bar",
+  "dining-banners",
+  "corner",
+  "storefront-sunny",
+  "dining-room",
+  "dining-windows",
+];
 
 export function Inside() {
   const { t } = useLang();
   const [idx, setIdx] = useState<number | null>(null);
+  const [edges, setEdges] = useState({ prev: false, next: true });
   const dlg = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
+  const track = useRef<HTMLUListElement>(null);
+  const drag = useRef({ active: false, moved: false, x: 0, left: 0 });
+  const touchX = useRef<number | null>(null);
+
+  const updateEdges = useCallback(() => {
+    const el = track.current;
+    if (!el) return;
+    setEdges({ prev: el.scrollLeft > 4, next: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 });
+  }, []);
+
+  useEffect(() => {
+    updateEdges();
+    window.addEventListener("resize", updateEdges);
+    return () => {
+      window.removeEventListener("resize", updateEdges);
+    };
+  }, [updateEdges]);
+
+  const page = (dir: number) => {
+    const el = track.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth * 0.85, behavior: "smooth" });
+  };
+
+  // Arrastrar con el mouse (en touch el scroll nativo ya funciona)
+  const onPointerDown = (e: React.PointerEvent<HTMLUListElement>) => {
+    if (e.pointerType !== "mouse" || !track.current) return;
+    drag.current = { active: true, moved: false, x: e.clientX, left: track.current.scrollLeft };
+  };
+  const onPointerMove = (e: React.PointerEvent<HTMLUListElement>) => {
+    const d = drag.current;
+    if (!d.active || !track.current) return;
+    const dx = e.clientX - d.x;
+    if (!d.moved && Math.abs(dx) > 6) {
+      d.moved = true;
+      track.current.classList.add("is-dragging");
+    }
+    if (d.moved) track.current.scrollLeft = d.left - dx;
+  };
+  const endDrag = () => {
+    drag.current.active = false;
+    track.current?.classList.remove("is-dragging");
+  };
 
   const close = useCallback(() => {
     dlg.current?.close();
@@ -114,36 +169,77 @@ export function Inside() {
       if (e.key === "ArrowLeft") go(-1);
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+    };
   }, [idx, go]);
 
   return (
     <section className="inside" aria-labelledby="inside-title">
       <div className="inside__head">
-        <h2 id="inside-title">{t.home.insideTitle}</h2>
-        <p>{t.home.insideText}</p>
-      </div>
-      <div className="inside__grid">
-        {INSIDE.map((n, i) => (
-          <button
-            key={n}
-            type="button"
-            className={"inside__item inside__item--" + i}
-            onClick={(e) => {
-              opener.current = e.currentTarget;
-              setIdx(i);
-            }}
-            aria-label={`${t.home.insideTitle} ${i + 1}/${INSIDE.length}`}
-          >
-            <Img name={n} alt="" sizes="(max-width: 800px) 50vw, 25vw" />
+        <div>
+          <h2 id="inside-title">{t.home.insideTitle}</h2>
+          <p>{t.home.insideText}</p>
+        </div>
+        <div className="inside__arrows">
+          <button type="button" className="arrow" onClick={() => page(-1)} disabled={!edges.prev} aria-label="Previous photos">
+            <svg viewBox="0 0 24 24" aria-hidden>
+              <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="1.8" />
+            </svg>
           </button>
-        ))}
+          <button type="button" className="arrow" onClick={() => page(1)} disabled={!edges.next} aria-label="Next photos">
+            <svg viewBox="0 0 24 24" aria-hidden>
+              <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="1.8" />
+            </svg>
+          </button>
+        </div>
       </div>
+      <ul
+        className="carousel"
+        ref={track}
+        onScroll={updateEdges}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerLeave={endDrag}
+        onClickCapture={(e) => {
+          if (drag.current.moved) {
+            e.preventDefault();
+            e.stopPropagation();
+            drag.current.moved = false;
+          }
+        }}
+        onDragStart={(e) => e.preventDefault()}
+      >
+        {INSIDE.map((n, i) => (
+          <li key={n} className="carousel__item">
+            <button
+              type="button"
+              onClick={(e) => {
+                opener.current = e.currentTarget;
+                setIdx(i);
+              }}
+              aria-label={`${t.home.insideTitle} ${i + 1}/${INSIDE.length}`}
+            >
+              <Img name={n} alt="" sizes="(max-width: 700px) 80vw, 420px" />
+            </button>
+          </li>
+        ))}
+      </ul>
       <dialog
         ref={dlg}
         className="lightbox"
         onClose={() => setIdx(null)}
         onClick={(e) => e.target === e.currentTarget && close()}
+        onTouchStart={(e) => {
+          touchX.current = e.touches[0].clientX;
+        }}
+        onTouchEnd={(e) => {
+          if (touchX.current === null) return;
+          const dx = e.changedTouches[0].clientX - touchX.current;
+          touchX.current = null;
+          if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+        }}
       >
         {idx !== null && (
           <>

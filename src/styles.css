@@ -1505,3 +1505,97 @@ p {
 .footer {
   padding-bottom: 6rem;
 }
+
+/* ===== Carrusel "Inside" ===== */
+.inside__head > div:first-child {
+  display: grid;
+  gap: 0.75rem;
+}
+.inside__arrows {
+  display: flex;
+  gap: 0.6rem;
+}
+.arrow {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(243, 235, 228, 0.4);
+  background: none;
+  color: var(--on-dark);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, opacity 0.2s;
+}
+.arrow svg {
+  width: 22px;
+  height: 22px;
+}
+.arrow:hover:not(:disabled) {
+  border-color: var(--bulb);
+  color: var(--bulb);
+}
+.arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.carousel {
+  list-style: none;
+  margin: 0 calc(-1 * var(--gutter));
+  padding: 0 var(--gutter) 0.5rem;
+  display: flex;
+  gap: 0.9rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+}
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+.carousel.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+.carousel__item {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+.carousel__item button {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: #2a0a12;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.carousel.is-dragging .carousel__item button {
+  cursor: grabbing;
+}
+.carousel__item img {
+  height: clamp(320px, 42vw, 540px);
+  width: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .inside__arrows {
+    display: none;
+  }
+  .carousel__item img {
+    height: auto;
+    width: 78vw;
+  }
+}
+@media (min-width: 1300px) {
+  .carousel {
+    padding-inline: calc((100% - var(--max)) / 2 + var(--gutter));
+    scroll-padding-inline: calc((100% - var(--max)) / 2 + var(--gutter));
+  }
+}
