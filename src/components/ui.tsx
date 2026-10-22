@@ -90,6 +90,7 @@ export function Social({ className = "" }: { className?: string }) {
           <svg viewBox="0 0 24 24" aria-hidden>
             <path
               fill="currentColor"
+              transform="translate(0 -0.65)"
               d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1Z"
             />
           </svg>
@@ -100,6 +101,7 @@ export function Social({ className = "" }: { className?: string }) {
           <svg viewBox="0 0 24 24" aria-hidden>
             <path
               fill="currentColor"
+              transform="translate(-1.3 0.1)"
               d="M16.6 3c.3 2.3 1.6 3.7 3.9 3.9v2.6c-1.3.1-2.6-.3-3.9-1.1v5.8c0 3.7-2.7 6-5.9 5.8-3.6-.3-5.6-3.8-4.5-6.9.8-2.3 3.1-3.7 5.6-3.4v2.8c-.4-.1-.8-.2-1.2-.1-1.3.1-2.2 1.2-2.1 2.4.1 1.3 1.2 2.2 2.5 2.1 1.2-.1 2.1-1 2.1-2.3V3h3.5Z"
             />
           </svg>

@@ -1246,11 +1246,21 @@ p {
   display: flex;
   gap: 0.5rem;
 }
+.social li {
+  display: block;
+  line-height: 0;
+}
 .social a {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   width: 42px;
   height: 42px;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  font-size: 0;
   border-radius: 50%;
   border: 1px solid rgba(243, 235, 228, 0.25);
   color: var(--on-dark);
@@ -1260,8 +1270,11 @@ p {
   color: var(--bulb);
 }
 .social svg {
+  display: block;
+  flex: 0 0 19px;
   width: 19px;
   height: 19px;
+  margin: 0;
 }
 @media (max-width: 860px) {
   .footer__inner {
